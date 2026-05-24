@@ -34,10 +34,10 @@ const bodyParts = ['Arms', 'Legs', 'Abs', 'Back', 'Chest'];
 
 function show(...elements) {
   [welcomeScreen, appScreen, choiceScreen, quizScreen, resultScreen].forEach(el => {
-    el.style.display = 'none';
+    if (el) el.style.display = 'none';
   });
   elements.forEach(el => {
-    el.style.display = 'block';
+    if (el) el.style.display = 'block';
   });
 }
 
@@ -187,12 +187,16 @@ function setupTimerControls() {
   doneBtn.addEventListener('click', startApp);
 }
 
-welcomeScreen.addEventListener('click', startApp);
+if (welcomeScreen) {
+  welcomeScreen.addEventListener('click', startApp);
+}
 
-choiceScreen.querySelectorAll('button').forEach(button => {
-  button.addEventListener('click', () => {
-    state.location = button.dataset.location || button.textContent;
-    updateQuiz();
+if (choiceScreen) {
+  choiceScreen.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', () => {
+      state.location = button.dataset.location || button.textContent;
+      updateQuiz();
+    });
   });
-});
+}
 
