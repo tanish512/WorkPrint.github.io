@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workout Planner</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <section id="welcome-screen">
+    <h1>💪 Workout Planner</h1>
+    <p class="intro">Tap to start your quick and easy workout plan.</p>
+  </section>
+
+  <section id="app-screen" style="display: none;">
+    
+    <div id="choice-screen">
+      <h2>Where are you working out? 🏠🏋️‍♂️</h2>
+      <div class="button-row">
+        <button data-location="Home">🏠 Home</button>
+        <button data-location="Gym">🏋️‍♀️ Gym</button>
+      </div>
+    </div>
+
+    <div id="quiz-screen" style="display: none;">
+      <h2>Quiz Questions Go Here</h2>
+    </div>
+
+    <div id="result-screen" style="display: none;">
+      <h2>Your Workout Plan</h2>
+      <p>Generated plan will appear here</p>
+    </div>
+
+  </section>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
