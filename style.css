@@ -31,13 +31,12 @@ body {
 }
 
 #app-screen {
-  padding: 30px 20px 50px;
+  padding: 30px 10px 50px;
   min-height: 100vh;
 }
 
 #choice-screen,
-#quiz-screen,
-#result-screen {
+#quiz-screen {
   background: rgba(15, 23, 42, 0.96);
   padding: 28px 24px;
   border-radius: 20px;
@@ -46,9 +45,16 @@ body {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
 }
 
+#result-screen {
+  width: auto;
+  margin: 20px;
+  padding: 0;
+  background: none;
+  box-shadow: none;
+}
+
 #choice-screen h2,
-#quiz-screen h2,
-#result-screen h2 {
+#quiz-screen h2 {
   margin-top: 0;
   font-size: 1.7rem;
   color: #e2e8f0;
@@ -94,29 +100,63 @@ button:hover {
   margin-top: 22px;
 }
 
-#result-screen ul {
+#plan-panel ul {
   list-style: none;
   padding: 0;
   margin: 18px 0 0;
 }
 
-#timer-screen {
-  background: rgba(15, 23, 42, 0.96);
-  padding: 28px 24px;
-  border-radius: 20px;
-  width: min(92%, 520px);
-  margin: 20px auto;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+.result-container {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 15px;
+  justify-items: center;
+  align-items: start;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
-#timer-screen h2 {
+#plan-panel,
+#timer-panel {
+  background: rgba(15, 23, 42, 0.96);
+  padding: 24px 18px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+  width: 100%;
+}
+
+#plan-panel {
+  max-width: 350px;
+}
+
+#timer-panel {
+  max-width: 280px;
+}
+
+#plan-panel h2,
+#timer-panel h2 {
   margin-top: 0;
   font-size: 1.7rem;
   color: #e2e8f0;
 }
 
+@media (max-width: 750px) {
+  .result-container {
+    grid-template-columns: 1fr;
+  }
+  
+  #plan-panel {
+    max-width: none;
+  }
+  
+  #timer-panel {
+    max-width: none;
+  }
+}
+
 .timer-display {
-  font-size: 4.5rem;
+  font-size: 3.5rem;
   font-weight: bold;
   color: #22c55e;
   margin: 30px 0 20px;
@@ -126,7 +166,7 @@ button:hover {
 
 #timer-value {
   display: inline-block;
-  min-width: 220px;
+  min-width: auto;
 }
 
 .timer-controls {

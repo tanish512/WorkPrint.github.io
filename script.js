@@ -3,7 +3,6 @@ const appScreen = document.getElementById('app-screen');
 const choiceScreen = document.getElementById('choice-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const resultScreen = document.getElementById('result-screen');
-const timerScreen = document.getElementById('timer-screen');
 
 const state = {
   location: '',
@@ -34,7 +33,7 @@ const workouts = {
 const bodyParts = ['Arms', 'Legs', 'Abs', 'Back', 'Chest'];
 
 function show(...elements) {
-  [welcomeScreen, appScreen, choiceScreen, quizScreen, resultScreen, timerScreen].forEach(el => {
+  [welcomeScreen, appScreen, choiceScreen, quizScreen, resultScreen].forEach(el => {
     el.style.display = 'none';
   });
   elements.forEach(el => {
@@ -47,7 +46,6 @@ function startApp() {
   state.location = '';
   state.part = '';
   quizScreen.innerHTML = '';
-  resultScreen.innerHTML = '';
   show(appScreen, choiceScreen);
 }
 
@@ -86,22 +84,23 @@ function showResult() {
       <li><strong>${entry.part}:</strong> ${entry.steps.join(' → ')}</li>
     `).join('');
 
-  resultScreen.innerHTML = `
+  const planPanel = document.getElementById('plan-panel');
+  planPanel.innerHTML = `
     <h2>✅ ${state.location} plan</h2>
     <p>Your plan so far:</p>
     <ul>${planItems}</ul>
     <p><strong>Next, keep working on ${partName.toLowerCase()} with good form.</strong></p>
     <div class="action-buttons">
-      <button id="start-workout-btn">⏱️ Start Workout</button>
       <button id="more-btn">➕ Add more</button>
       <button id="reset-btn">🔄 New routine</button>
     </div>
   `;
 
   show(appScreen, resultScreen);
+  setupTimerControls();
+  updateTimerDisplay();
   document.getElementById('more-btn').addEventListener('click', updateQuiz);
   document.getElementById('reset-btn').addEventListener('click', startApp);
-  document.getElementById('start-workout-btn')?.addEventListener('click', startTimer);
 }
 
 function formatTime(seconds) {
@@ -115,12 +114,6 @@ function updateTimerDisplay() {
   const mins = Math.floor(state.timerSeconds / 60);
   const timeLabel = mins === 1 ? '1 minute' : `${mins} minutes`;
   document.getElementById('time-label').textContent = timeLabel;
-}
-
-function startTimer() {
-  show(appScreen, timerScreen);
-  setupTimerControls();
-  updateTimerDisplay();
 }
 
 function setupTimerControls() {
