@@ -34,6 +34,24 @@
       <p>Generated plan will appear here</p>
     </div>
 
+    <div id="timer-screen" style="display: none;">
+      <h2>Workout Timer ⏱️</h2>
+      <div class="timer-display">
+        <span id="timer-value">05:00</span>
+      </div>
+      <div class="timer-controls">
+        <button id="decrease-btn" class="adjust-btn">−</button>
+        <span id="time-label">5 minutes</span>
+        <button id="increase-btn" class="adjust-btn">+</button>
+      </div>
+      <div class="action-buttons">
+        <button id="start-btn">▶️ Start</button>
+        <button id="pause-btn" disabled>⏸️ Pause</button>
+        <button id="reset-timer-btn">🔄 Reset</button>
+      </div>
+      <button id="done-btn" class="secondary-btn">✅ Done with workout</button>
+    </div>
+
   </section>
 
   <script src="script.js"></script>

@@ -3,11 +3,15 @@ const appScreen = document.getElementById('app-screen');
 const choiceScreen = document.getElementById('choice-screen');
 const quizScreen = document.getElementById('quiz-screen');
 const resultScreen = document.getElementById('result-screen');
+const timerScreen = document.getElementById('timer-screen');
 
 const state = {
   location: '',
   part: '',
-  plan: []
+  plan: [],
+  timerSeconds: 300,
+  timerRunning: false,
+  timerInterval: null
 };
 
 const workouts = {
@@ -30,7 +34,7 @@ const workouts = {
 const bodyParts = ['Arms', 'Legs', 'Abs', 'Back', 'Chest'];
 
 function show(...elements) {
-  [welcomeScreen, appScreen, choiceScreen, quizScreen, resultScreen].forEach(el => {
+  [welcomeScreen, appScreen, choiceScreen, quizScreen, resultScreen, timerScreen].forEach(el => {
     el.style.display = 'none';
   });
   elements.forEach(el => {
@@ -88,6 +92,7 @@ function showResult() {
     <ul>${planItems}</ul>
     <p><strong>Next, keep working on ${partName.toLowerCase()} with good form.</strong></p>
     <div class="action-buttons">
+      <button id="start-workout-btn">⏱️ Start Workout</button>
       <button id="more-btn">➕ Add more</button>
       <button id="reset-btn">🔄 New routine</button>
     </div>
@@ -96,6 +101,97 @@ function showResult() {
   show(appScreen, resultScreen);
   document.getElementById('more-btn').addEventListener('click', updateQuiz);
   document.getElementById('reset-btn').addEventListener('click', startApp);
+  document.getElementById('start-workout-btn')?.addEventListener('click', startTimer);
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+}
+
+function updateTimerDisplay() {
+  document.getElementById('timer-value').textContent = formatTime(state.timerSeconds);
+  const mins = Math.floor(state.timerSeconds / 60);
+  const timeLabel = mins === 1 ? '1 minute' : `${mins} minutes`;
+  document.getElementById('time-label').textContent = timeLabel;
+}
+
+function startTimer() {
+  show(appScreen, timerScreen);
+  setupTimerControls();
+  updateTimerDisplay();
+}
+
+function setupTimerControls() {
+  const decreaseBtn = document.getElementById('decrease-btn');
+  const increaseBtn = document.getElementById('increase-btn');
+  const startBtn = document.getElementById('start-btn');
+  const pauseBtn = document.getElementById('pause-btn');
+  const resetBtn = document.getElementById('reset-timer-btn');
+  const doneBtn = document.getElementById('done-btn');
+
+  decreaseBtn.addEventListener('click', () => {
+    if (!state.timerRunning && state.timerSeconds >= 60) {
+      state.timerSeconds -= 60;
+      updateTimerDisplay();
+    }
+  });
+
+  increaseBtn.addEventListener('click', () => {
+    if (!state.timerRunning && state.timerSeconds < 3600) {
+      state.timerSeconds += 60;
+      updateTimerDisplay();
+    }
+  });
+
+  startBtn.addEventListener('click', () => {
+    if (!state.timerRunning) {
+      state.timerRunning = true;
+      startBtn.disabled = true;
+      pauseBtn.disabled = false;
+      decreaseBtn.disabled = true;
+      increaseBtn.disabled = true;
+
+      state.timerInterval = setInterval(() => {
+        state.timerSeconds--;
+        updateTimerDisplay();
+        if (state.timerSeconds <= 0) {
+          clearInterval(state.timerInterval);
+          state.timerRunning = false;
+          startBtn.disabled = false;
+          pauseBtn.disabled = true;
+          alert('⏰ Time\'s up!');
+        }
+      }, 1000);
+    }
+  });
+
+  pauseBtn.addEventListener('click', () => {
+    if (state.timerRunning) {
+      clearInterval(state.timerInterval);
+      state.timerRunning = false;
+      startBtn.disabled = false;
+      pauseBtn.disabled = true;
+      decreaseBtn.disabled = false;
+      increaseBtn.disabled = false;
+    }
+  });
+
+  resetBtn.addEventListener('click', () => {
+    if (state.timerInterval) {
+      clearInterval(state.timerInterval);
+    }
+    state.timerRunning = false;
+    state.timerSeconds = 300;
+    startBtn.disabled = false;
+    pauseBtn.disabled = true;
+    decreaseBtn.disabled = false;
+    increaseBtn.disabled = false;
+    updateTimerDisplay();
+  });
+
+  doneBtn.addEventListener('click', startApp);
 }
 
 welcomeScreen.addEventListener('click', startApp);
